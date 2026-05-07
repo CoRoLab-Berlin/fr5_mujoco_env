@@ -20,7 +20,7 @@ The environment is built to be easily customizable so you can modify it for your
 1. Clone this repository:
 
     ```bash
-    git clone git@github.com:CoRoLab-Berlin/Fairino-FR5-Mujoco.git
+    git clone git@github.com:CoRoLab-Berlin/fr5_mujoco_env.git
     ```
 
 1. Create and activate a virtual environment (Python 3.12+ recommended):
