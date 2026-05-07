@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fr5_mujoco_env"
+version = "0.1.0"
+authors = [
+  { name="Kevin Sommler", email="sommler@live.de" },
+]
+description = "A MuJoCo environment for the Fairino FR5 cobot. Easily record HDF5 datasets for Vision-Language-Action models."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "h5py",
+    "matplotlib",
+    "mujoco",
+    "numpy<2.0",
+    "opencv-python",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/CoRoLab-Berlin/Fairino-FR5-Mujoco"
+"Bug Tracker" = "https://github.com/CoRoLab-Berlin/Fairino-FR5-Mujoco/issues"
+
+[tool.setuptools]
+
+[tool.setuptools.package-data]
+"learning_from_demonstration" = ["assets/**/*"]

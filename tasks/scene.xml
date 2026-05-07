@@ -1,0 +1,74 @@
+<mujoco model="scene">
+  <compiler angle="degree"/>
+
+  <option gravity="0 0 -9.81"/>
+  <statistic center="0 0 0.88" extent="5.0" meansize="0.02"/>
+
+  <visual>
+    <headlight diffuse="0.6 0.6 0.6" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+    <rgba haze="0.15 0.25 0.35 1"/>
+    <global azimuth="150" elevation="-20" offwidth="512" offheight="512"/>
+  </visual>
+
+  <asset>
+    <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="3072"/>
+    <texture type="2d" name="groundplane" builtin="checker" mark="edge" rgb1="0.2 0.3 0.4" rgb2="0.1 0.2 0.3" markrgb="0.8 0.8 0.8" width="300" height="300"/>
+    <material name="groundplane" texture="groundplane" texuniform="true" texrepeat="5 5" reflectance="0.2"/>
+
+    <model name="fr5_robot" file="fr5_robot.xml"/>
+    <model name="table_model" file="table.xml"/>
+    <model name="plate_model" file="plate.xml"/>
+  </asset>
+
+  <worldbody>
+    <light pos="0 0 10" dir="0 0 -1" directional="false" castshadow="false"/>
+    <geom name="floor" size="0 0 .125" type="plane" material="groundplane" conaffinity="15" condim="3"/>
+
+    <camera name="left" fovy="45" resolution="512 512" pos="-0.497 0.733 1.915" xyaxes="-0.745 -0.667 -0.000 0.457 -0.510 0.728"/>
+    <camera name="right" fovy="45" resolution="512 512" pos="-0.364 -0.987 1.790" xyaxes="0.888 -0.460 0.000 0.262 0.506 0.822"/>
+
+    <body name="table" pos="0.2 0 0" euler="0 0 0">
+      <attach model="table_model" body="table_base" prefix=""/>
+    </body>
+
+    <body name="robot" pos="-0.3 0 0.949" euler="0 0 90">
+      <attach model="fr5_robot" body="base_link" prefix=""/>
+    </body>
+
+    <body name="target" pos="0.1975 -0.104 1.288" gravcomp="1">
+      <joint name="slide_x" type="slide" axis="1 0 0" damping="45"/>
+      <joint name="slide_y" type="slide" axis="0 1 0" damping="45"/>
+      <joint name="slide_z" type="slide" axis="0 0 1" damping="45"/>
+
+      <joint name="cube_ball" type="ball" damping="5"/>
+
+      <geom name="target_geom" type="box" size="0.015 0.015 0.015" rgba="1 0 0 0.2" contype="0" conaffinity="0" group="1"/>
+    </body>
+
+    <body name="pickup_cube" pos="0.1 0.3 0.9764">
+      <freejoint name="pickup_cube_joint"/>
+      <geom name="pickup_cube_geom" type="box" size="0.0275 0.0275 0.0275" rgba="1 1 0.2 1" density="1000"/>
+    </body>
+
+    <body name="plate" pos="0.1 -0.3 0.94768">
+      <freejoint name="plate_joint"/>
+      <attach model="plate_model" body="plate_base" prefix=""/>
+    </body>
+
+  </worldbody>
+
+  <actuator>
+    <motor joint="slide_x" name="motor_x" gear="25"/>
+    <motor joint="slide_y" name="motor_y" gear="25"/>
+    <motor joint="slide_z" name="motor_z" gear="25"/>
+  </actuator>
+
+  <keyframe>
+    <key name="robot_home" qpos="
+    -1.5708 -1.5708 -1.5708 -1.5708 1.5708 0 0 0
+    0 0 0 1 0 0 0
+    0.1 0.3 0.9764 1 0 0 0
+    0.1 -0.3 0.94768 1 0 0 0"/>
+  </keyframe>
+
+</mujoco>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mujoco model="fr5_robot">
+  <compiler angle="radian" meshdir="./meshes/fr5"/>
+
+  <option gravity="0 0 -9.81" timestep="0.0005"/>
+
+  <default>
+    <joint damping="0"/>
+
+    <default class="visual">
+      <geom group="2" type="mesh" contype="0" conaffinity="0"/>
+    </default>
+
+    <default class="collision">
+      <geom group="3" rgba=".2 .6 .2 .3" mass="0" density="0"/>
+    </default>
+
+    <site group="0" rgba="1 0 0 1"/>
+  </default>
+
+  <asset>
+    <material name="robot" rgba="0.92 0.92 0.92 1" specular="0.15" shininess="0.25" reflectance="0.03"/>
+    <material name="aluminium" rgba="0.75 0.75 0.78 1" specular="0.8" shininess="0.6" reflectance="0.3"/>
+    <material name="orange_accent" rgba="0.95 0.3 0.15 1" specular="0.5" shininess="0.3"/>
+
+    <mesh name="base_link_mesh" file="base_link.STL"/>
+    <mesh name="shoulder_link_mesh" file="shoulder_link.STL"/>
+    <mesh name="shoulder_accent_mesh" file="shoulder_accent.STL"/>
+    <mesh name="upperarm_link_mesh" file="upperarm_link.STL"/>
+    <mesh name="upperarm_accent_mesh" file="upperarm_accent.STL"/>
+    <mesh name="forearm_link_mesh" file="forearm_link.STL"/>
+    <mesh name="forearm_accent_mesh" file="forearm_accent.STL"/>
+    <mesh name="wrist1_link_mesh" file="wrist1_link.STL"/>
+    <mesh name="wrist1_accent_mesh" file="wrist1_accent.STL"/>
+    <mesh name="wrist2_link_mesh" file="wrist2_link.STL"/>
+    <mesh name="wrist2_accent_mesh" file="wrist2_accent.STL"/>
+    <mesh name="wrist3_link_mesh" file="wrist3_link.STL"/>
+
+    <model name="gripper_model" file="gripper_pgi.xml"/>
+  </asset>
+
+  <worldbody>
+    <body name="base_link" pos="0 0 0" euler="0 0 0">
+      <inertial pos="-0.00044457 0.0004811 0.032592" mass="1.073" fullinertia="0.0030836 0.0030825 0.0045209 1.5354E-05 -1.9315E-05 -1.7918E-05"/>
+      <geom class="visual" name="base_link_geom" mesh="base_link_mesh" material="robot"/>
+      <geom class="collision" name="collision/base_link" type="cylinder" size="0.0584 0.0395" pos="0 0 0.0395"/>
+      <!-- shoulder_pan: revolute base_link -> shoulder_Link -->
+      <body name="shoulder_link" pos="0 0 0" euler="0 0 0">
+        <inertial pos="1.3785E-06 -0.0031495 0.14526" mass="4.64" fullinertia="0.010731 0.010408 0.0081793 -8.0587E-09 -3.6773E-08 0.00012853"/>
+        <joint name="shoulder_pan" type="hinge" axis="0 0 1" range="-3.0543261 3.0543261" damping="1.0" frictionloss="0.2"/>
+        <geom class="visual" name="shoulder_link_geom" mesh="shoulder_link_mesh" material="robot"/>
+        <geom class="visual" name="shoulder_accent_geom" mesh="shoulder_accent_mesh" material="orange_accent"/>
+        <geom class="collision" name="collision/shoulder_link" type="cylinder" size="0.0584 0.069" pos="0 0 0.1483"/>
+        <!-- shoulder_lift: revolute shoulder_link -> upperarm_link -->
+        <body name="upperarm_link" pos="0 0 0.155" euler="1.570796 0 0">
+          <inertial pos="-2.2928E-05 0.33278 0.084237" mass="10.08" fullinertia="0.028392 0.4559 0.44974 -1.337E-07 -3.9895E-09 4.214E-08"/>
+          <joint name="shoulder_lift" type="hinge" axis="0 0 1" range="-4.6251225 1.4835298" damping="1.0" frictionloss="0.2"/>
+          <geom class="visual" name="upperarm_link_geom" mesh="upperarm_link_mesh" material="robot"/>
+          <geom class="visual" name="upperarm_accent_geom" mesh="upperarm_accent_mesh" material="orange_accent"/>
+          <geom class="collision" name="collision/upperarm_link_1" type="cylinder" size="0.0584 0.1" pos="0 0 0.1033"/>
+          <geom class="collision" name="collision/upperarm_link_2" type="cylinder" size="0.046 0.2" pos="-0.215 0 0.138" euler="0 1.5708 0"/>
+          <geom class="collision" name="collision/upperarm_link_3" type="cylinder" size="0.0584 0.0716" pos="-0.425 0 0.1316"/>
+          <!-- elbow: revolute upperarm_link -> forearm_link -->
+          <body name="forearm_link" pos="-0.425 0 0" euler="0 0 0">
+            <inertial pos="0.092224 -2.2928E-05 0.084237" mass="2.71" fullinertia="0.0085096 0.16971 0.16854 2.1613E-06 -0.0068678 3.7086E-08"/>
+            <joint name="elbow" type="hinge" axis="0 0 1" range="-2.8274333 2.8274333" damping="1.0" frictionloss="0.2"/>
+            <geom class="visual" name="forearm_link_geom" mesh="forearm_link_mesh" material="robot"/>
+            <geom class="visual" name="forearm_accent_geom" mesh="forearm_accent_mesh" material="orange_accent"/>
+            <geom class="collision" name="collision/forearm_link1" type="sphere" size="0.058" pos="-0.005 0 0.03"/>
+            <geom class="collision" name="collision/forearm_link2" type="cylinder" size="0.041 0.18" pos="-0.215 0 0" euler="0 1.5708 0"/>
+            <geom class="collision" name="collision/forearm_link3" type="cylinder" size="0.041 0.0762" pos="-0.395 0 0.027"/>
+            <!-- wrist_1: revolute forearm_link -> wrist1_link -->
+            <body name="wrist1_link" pos="-0.395 0 0" euler="0 0 0">
+              <inertial pos="0.48722 -2.2928E-05 0.084237" mass="1.56" fullinertia="0.00216 0.0015455 0.0019902 4.888E-09 3.1528E-08 3.7678E-05"/>
+              <joint name="wrist_1" type="hinge" axis="0 0 1" range="-4.6251225 1.4835298" damping="1.0" frictionloss="0.2"/>
+              <geom class="visual" name="wrist1_link_geom" mesh="wrist1_link_mesh" material="robot"/>
+              <geom class="visual" name="wrist1_accent_geom" mesh="wrist1_accent_mesh" material="orange_accent"/>
+              <geom class="collision" name="collision/wrist1_link" type="cylinder" size="0.0405 0.075" pos="0 -0.0258 0.102" euler="1.5708 0 0"/>
+              <!-- wrist_2: revolute wrist1_link -> wrist2_link -->
+              <body name="wrist2_link" pos="0 0 0.1021" euler="1.570796 0 0">
+                <inertial pos="-2.396E-06 0.0045906 0.099342" mass="1.56" fullinertia="0.0020612 0.0014477 0.0019573 8.7064E-09 -3.4742E-08 -2.8534E-05"/>
+                <joint name="wrist_2" type="hinge" axis="0 0 1" range="-3.0543261 3.0543261" damping="1.0" frictionloss="0.2"/>
+                <geom class="visual" name="wrist2_link_geom" mesh="wrist2_link_mesh" material="robot"/>
+                <geom class="visual" name="wrist2_accent_geom" mesh="wrist2_accent_mesh" material="orange_accent"/>
+                <geom class="collision" name="collision/wrist23_link" type="cylinder" size="0.0405 0.074" pos="0 0.025 0.102" euler="1.5708 0 0"/>
+                <!-- wrist_3: revolute wrist2_link -> wrist3_link -->
+                <body name="wrist3_link" pos="0 0 0.102" euler="-1.5708 0 0">
+                  <inertial pos="5.8427E-06 7.5807E-05 0.079126" mass="0.36" fullinertia="0.00027721 0.00027839 0.00041605 -1.8677E-09 -1.188E-07 2.2607E-07"/>
+                  <joint name="wrist_3" type="hinge" axis="0 0 1" range="-3.0543261 3.0543261" damping="1.0" frictionloss="0.2"/>
+                  <geom class="visual" name="wrist3_link_geom" mesh="wrist3_link_mesh" material="aluminium"/>
+                  <!-- arm_gripper_joint: fixed wrist3_link -> gripper_base_link -->
+                  <site name="attachment_site" pos="0 0 0.107" euler="0 0 -0.698132" size="0.005" rgba="1 0 0 1"/>
+                  <body name="gripper_mount" pos="0 0 0.123" euler="0 0 0">
+                    <attach model="gripper_model" body="gripper_base_link" prefix=""/>
+                  </body>
+                </body>
+              </body>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <actuator>
+    <motor name="shoulder_pan" joint="shoulder_pan" ctrllimited="true" ctrlrange="-150 150"/>
+    <motor name="shoulder_lift" joint="shoulder_lift" ctrllimited="true" ctrlrange="-150 150"/>
+    <motor name="elbow" joint="elbow" ctrllimited="true" ctrlrange="-150 150"/>
+    <motor name="wrist_1" joint="wrist_1" ctrllimited="true" ctrlrange="-28 28"/>
+    <motor name="wrist_2" joint="wrist_2" ctrllimited="true" ctrlrange="-28 28"/>
+    <motor name="wrist_3" joint="wrist_3" ctrllimited="true" ctrlrange="-28 28"/>
+  </actuator>
+
+  <keyframe>
+    <key name="home" qpos="0 0 0 -1.57079 0 -0.7853" ctrl="0 0 0 0 0 0"/>
+  </keyframe>
+</mujoco>

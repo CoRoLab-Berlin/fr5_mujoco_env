@@ -1,0 +1,124 @@
+# Exclude specific files:
+exclude = [
+    ".venv/",
+    ]
+
+line-length = 99
+target-version = "py313"
+
+## See for the referenced rules: https://docs.astral.sh/ruff/rules/
+[lint]
+# 1. Enable flake8-bugbear (`B`) rules, in addition to the defaults.
+select = [
+    # pycodestyle: Style Errors and Warnings
+    "E","W",
+    # Pyflakes: A simple program which checks Python files for common errors.
+    "F",
+    # mccabe complexity code smell
+    "C90",
+    # isort
+    "I",
+    # pep8-naming: naming conventions rules
+    "N",
+    # pydocstyle: Stylechecker for docstrings
+    "D",
+    # pyupgrade: upgrade syntax to current version of python
+    "UP",
+    # flake8-bugbear
+    "B",
+    # flake8-simplify
+    "SIM",
+    # flake8-annotation: checks for type annotations, not a static type checker
+    "ANN",
+    # flake8-comprehensions: this could have been a comprehensions...
+    "C4",
+    # flake8 error and logging messages:
+    "EM", "G",
+    # flake8-pytest-style:
+    "PT",
+    # use pathlib!
+    "PTH",
+    # numpy rules:
+    "NPY"
+]
+preview=true
+# add additional rules based on colcon build output here!
+extend-select = [
+    "D213",
+    "D417",
+    "E302",
+    "E303",
+    "E261",
+    "E231",
+    "E252",
+    "E266",
+    "D210",
+    "D408",
+    "D200",
+    "D211",
+    "D400",
+    "D207",
+    "D208",
+    "D409",
+    "D214",
+    "D411",
+    "D202",
+    "D300",
+    "D204",
+    "D415",
+    "D403",
+    "D414",
+    "D301",
+    "D201",
+    "D418",
+    "D419",
+    "D410",
+    "D206",
+    "D209",
+    "D213",
+    "D402",
+    "D401",
+    "D417",
+    "D416",
+    "D205",
+    "D215",
+    "D412",
+    ]
+
+# 2. Ignore Specific rules with their Codes...
+ignore = [
+    "ANN101", # missing-type-self
+    "D105",   # missing-docstring-in-magic-method
+    "UP031",  # Use format specifiers instead of percent format <->  percent format used by ROS2 Logging system...
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D105",
+    "D106",
+    "D107",
+    "D203",
+    "D212",
+    "D404",
+    "D406",
+    "D407",
+    "N806",
+]
+
+# 3. Avoid trying to fix flake8-bugbear (`B`) violations.
+unfixable = ["B"]
+
+# 4. Ignore `E402` (import violations) in all `__init__.py` files, and in select subdirectories.
+[lint.per-file-ignores]
+"__init__.py" = ["E401"] # E401 unused-import
+
+
+[format]
+# 5. Use single quotes for non-triple-quoted strings.
+quote-style = "single"
+
+# 6. Add additional guides in accordance with colcon tests
+
+[lint.pydocstyle]
+convention = "numpy"
